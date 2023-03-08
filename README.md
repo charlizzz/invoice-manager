@@ -1,1 +1,2 @@
-# invoice-manager
+# Invoice Manager
+
