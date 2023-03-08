@@ -6,13 +6,18 @@ import (
 	"os"
 	"testing"
 
-	_ "github.com/jackc/pgx/v5"
+	_ "github.com/lib/pq"
+)
+
+const (
+	DbDriver = "postgres"
+	DbSource = "postgresql://root:secret@localhost:5432/invoice-db?sslmode=disable"
 )
 
 var testQueries *Queries
 
 func TestMain(m *testing.M) {
-	conn, err := sql.Open(os.Getenv("POSTGRES_DRIVER"), os.Getenv("DATABASE_URL"))
+	conn, err := sql.Open(DbDriver, DbSource)
 	if err != nil {
 		log.Fatal("cannot connect to the database:", err)
 	}

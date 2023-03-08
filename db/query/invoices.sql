@@ -10,22 +10,10 @@ OFFSET $2;
 
 -- name: CreateInvoice :one
 INSERT INTO invoices (
-  user_id, status, label, amount
+  user_id, label, amount
 ) VALUES (
-  $1, $2, $3, $4
+  $1, $2, $3
 )
-RETURNING *;
-
--- name: UpdateInvoiceAmount :one
-UPDATE invoices 
-SET amount = $2
-WHERE id = $1
-RETURNING *;
-
--- name: UpdateInvoiceLabel :one
-UPDATE invoices 
-SET label = $2
-WHERE id = $1
 RETURNING *;
 
 -- name: DeleteInvoice :exec

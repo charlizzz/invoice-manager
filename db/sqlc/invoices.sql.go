@@ -12,27 +12,21 @@ import (
 
 const createInvoice = `-- name: CreateInvoice :one
 INSERT INTO invoices (
-  user_id, status, label, amount
+  user_id, label, amount
 ) VALUES (
-  $1, $2, $3, $4
+  $1, $2, $3
 )
 RETURNING id, user_id, status, label, amount
 `
 
 type CreateInvoiceParams struct {
-	UserID sql.NullInt32  `json:"user_id"`
-	Status sql.NullString `json:"status"`
-	Label  string         `json:"label"`
-	Amount int64          `json:"amount"`
+	UserID sql.NullInt32 `json:"user_id"`
+	Label  string        `json:"label"`
+	Amount int64         `json:"amount"`
 }
 
 func (q *Queries) CreateInvoice(ctx context.Context, arg CreateInvoiceParams) (Invoices, error) {
-	row := q.db.QueryRowContext(ctx, createInvoice,
-		arg.UserID,
-		arg.Status,
-		arg.Label,
-		arg.Amount,
-	)
+	row := q.db.QueryRowContext(ctx, createInvoice, arg.UserID, arg.Label, arg.Amount)
 	var i Invoices
 	err := row.Scan(
 		&i.ID,
@@ -111,54 +105,4 @@ func (q *Queries) ListInvoices(ctx context.Context, arg ListInvoicesParams) ([]I
 		return nil, err
 	}
 	return items, nil
-}
-
-const updateInvoiceAmount = `-- name: UpdateInvoiceAmount :one
-UPDATE invoices 
-SET amount = $2
-WHERE id = $1
-RETURNING id, user_id, status, label, amount
-`
-
-type UpdateInvoiceAmountParams struct {
-	ID     int32 `json:"id"`
-	Amount int64 `json:"amount"`
-}
-
-func (q *Queries) UpdateInvoiceAmount(ctx context.Context, arg UpdateInvoiceAmountParams) (Invoices, error) {
-	row := q.db.QueryRowContext(ctx, updateInvoiceAmount, arg.ID, arg.Amount)
-	var i Invoices
-	err := row.Scan(
-		&i.ID,
-		&i.UserID,
-		&i.Status,
-		&i.Label,
-		&i.Amount,
-	)
-	return i, err
-}
-
-const updateInvoiceLabel = `-- name: UpdateInvoiceLabel :one
-UPDATE invoices 
-SET label = $2
-WHERE id = $1
-RETURNING id, user_id, status, label, amount
-`
-
-type UpdateInvoiceLabelParams struct {
-	ID    int32  `json:"id"`
-	Label string `json:"label"`
-}
-
-func (q *Queries) UpdateInvoiceLabel(ctx context.Context, arg UpdateInvoiceLabelParams) (Invoices, error) {
-	row := q.db.QueryRowContext(ctx, updateInvoiceLabel, arg.ID, arg.Label)
-	var i Invoices
-	err := row.Scan(
-		&i.ID,
-		&i.UserID,
-		&i.Status,
-		&i.Label,
-		&i.Amount,
-	)
-	return i, err
 }
