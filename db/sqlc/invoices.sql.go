@@ -84,7 +84,7 @@ func (q *Queries) ListInvoices(ctx context.Context, arg ListInvoicesParams) ([]I
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Invoices
+	items := []Invoices{}
 	for rows.Next() {
 		var i Invoices
 		if err := rows.Scan(
@@ -105,4 +105,24 @@ func (q *Queries) ListInvoices(ctx context.Context, arg ListInvoicesParams) ([]I
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateInvoiceStatus = `-- name: UpdateInvoiceStatus :one
+UPDATE invoices 
+SET status = 'paid'
+WHERE id = $1
+RETURNING id, user_id, status, label, amount
+`
+
+func (q *Queries) UpdateInvoiceStatus(ctx context.Context, id int32) (Invoices, error) {
+	row := q.db.QueryRowContext(ctx, updateInvoiceStatus, id)
+	var i Invoices
+	err := row.Scan(
+		&i.ID,
+		&i.UserID,
+		&i.Status,
+		&i.Label,
+		&i.Amount,
+	)
+	return i, err
 }
