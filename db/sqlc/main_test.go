@@ -6,12 +6,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/charlizzz/invoice-manager/util"
 	_ "github.com/lib/pq"
-)
-
-const (
-	DbDriver = "postgres"
-	DbSource = "postgresql://root:secret@localhost:5432/invoice-db?sslmode=disable"
 )
 
 var testQueries *Queries
@@ -20,7 +16,12 @@ var testDB *sql.DB
 func TestMain(m *testing.M) {
 	var err error
 
-	testDB, err = sql.Open(DbDriver, DbSource)
+	config, err := util.LoadConfig("../..")
+	if err != nil {
+		log.Fatal("Cannot load the config : %w", err)
+	}
+
+	testDB, err = sql.Open(config.DbDriver, config.DbSource)
 	if err != nil {
 		log.Fatal("cannot connect to the database:", err)
 	}
