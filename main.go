@@ -6,26 +6,26 @@ import (
 
 	"github.com/charlizzz/invoice-manager/api"
 	db "github.com/charlizzz/invoice-manager/db/sqlc"
+	"github.com/charlizzz/invoice-manager/util"
 	_ "github.com/lib/pq"
 )
 
-const (
-	DbDriver     = "postgres"
-	DbSource     = "postgresql://root:secret@localhost:5432/invoice-db?sslmode=disable"
-	serverAdress = "0.0.0.0:8080"
-)
-
 func main() {
-	conn, err := sql.Open(DbDriver, DbSource)
+	config, err := util.LoadConfig(".")
 	if err != nil {
-		log.Fatal("cannot connect to the database:", err)
+		log.Fatal("Cannot load the config: ", err)
+	}
+
+	conn, err := sql.Open(config.DbDriver, config.DbSource)
+	if err != nil {
+		log.Fatal("cannot connect to the database: ", err)
 	}
 
 	store := db.NewStore(conn)
 	server := api.NewServer(store)
 
-	err = server.Start(serverAdress)
+	err = server.Start(config.ServerAddress)
 	if err != nil {
-		log.Fatal("cannot start the server:", err)
+		log.Fatal("cannot start the server: ", err)
 	}
 }
