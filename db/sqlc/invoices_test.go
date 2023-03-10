@@ -77,3 +77,13 @@ func TestDeleteInvoice(t *testing.T) {
 	require.EqualError(t, err, sql.ErrNoRows.Error())
 	require.Empty(t, invoice2)
 }
+
+func TestUpdateInvoiceStatus(t *testing.T) {
+	invoice1 := createTestInvoice(t)
+
+	invoice2, err := testQueries.UpdateInvoiceStatus(context.Background(), invoice1.ID)
+	require.NoError(t, err)
+	require.NotEmpty(t, invoice2)
+
+	require.EqualValues(t, sql.NullString{String: "paid", Valid: true}, invoice2.Status)
+}

@@ -16,6 +16,12 @@ INSERT INTO invoices (
 )
 RETURNING *;
 
+-- name: UpdateInvoiceStatus :one
+UPDATE invoices 
+SET status = 'paid'
+WHERE id = $1
+RETURNING *;
+
 -- name: DeleteInvoice :exec
 DELETE FROM invoices 
 WHERE id = $1;
