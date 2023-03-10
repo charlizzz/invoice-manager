@@ -9,9 +9,9 @@ import (
 )
 
 type createInvoiceRequest struct {
-	UserID int32   `json:"user_id" binding:"required"`
-	Label  string  `json:"label" binding:"required"`
-	Amount float64 `json:"amount" binding:"required"`
+	UserID int32  `json:"user_id" binding:"required"`
+	Label  string `json:"label" binding:"required"`
+	Amount int64  `json:"amount" binding:"required"`
 }
 
 func (server *Server) createInvoice(ctx *gin.Context) {
@@ -25,7 +25,7 @@ func (server *Server) createInvoice(ctx *gin.Context) {
 	arg := db.CreateInvoiceParams{
 		UserID: sql.NullInt32{Int32: req.UserID, Valid: true},
 		Label:  req.Label,
-		Amount: int64(req.Amount),
+		Amount: req.Amount,
 	}
 
 	_, err2 := server.store.CreateInvoice(ctx, arg)

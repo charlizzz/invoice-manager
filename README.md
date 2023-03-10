@@ -2,7 +2,39 @@
 
 Small API example to handle invoices for a freelancer.
 
+## Endpoints
+
+  - "/users" of type GET is returning a list of the first 100 users from the db
+  
+  - "/invoice" of type POST is returning a HTTP Status code 204, otherwise an HTTP Status error code (500, 400)
+    - accept a JSON as input such as : 
+
+    ```json
+    {
+    "user_id": 21,
+    "amount": 113,
+    "label": "Work for April"
+    }
+    ```
+
+  - "/transaction" of type POST is returning a HTTP Status code 204, otherwise an HTTP Status error code (404, 400, 422, 500)
+      - accept a JSON as input such as : 
+
+    ```json
+    {
+    "invoice_id": 42,
+    "amount": 956,
+    "reference": "JMPINV200220117"
+    }
+    ```
+
+## Note
+
+For now, on the endpoints "/invoice" and "/transaction", I made the choice to refuse float type number as input. Consistency of the values' type.
+
 ## Technical Improvements
+
+  - Have to mock the db to test HTTP API (aim 100% coverage)
 
   - Improve the unit test with many transactions to test concurrency
 
@@ -11,8 +43,6 @@ Small API example to handle invoices for a freelancer.
   - Missing logging / tracing handler (otel)
 
   - Missing continous deployment files with Kubes files (helm ?)
-
-  - 
 
 ## App Improvements
 

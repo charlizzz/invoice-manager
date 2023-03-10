@@ -9,9 +9,9 @@ import (
 )
 
 type transactionRequest struct {
-	InvoiceID int32   `json:"invoice_id" binding:"required,min=1"`
-	Amount    float64 `json:"amount" binding:"required,gt=0"`
-	Reference string  `json:"reference"`
+	InvoiceID int32  `json:"invoice_id" binding:"required,min=1"`
+	Amount    int64  `json:"amount" binding:"required,gt=0"`
+	Reference string `json:"reference"`
 }
 
 func (server *Server) createTransaction(ctx *gin.Context) {
@@ -61,7 +61,7 @@ func validInvoice(ctx *gin.Context, req transactionRequest, invoice db.Invoices,
 		return false
 	}
 
-	if invoice.Amount != int64(req.Amount) {
+	if invoice.Amount != req.Amount {
 		ctx.JSON(http.StatusBadRequest, struct {
 			Err string
 		}{Err: "error: The amount does not match with this invoice"})
