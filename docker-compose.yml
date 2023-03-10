@@ -1,8 +1,17 @@
 version: "3.9"
 services:
   postgres:
-    build: .
+    build:
+      context: "./db/"
+      dockerfile: Dockerfile
     ports:
-      - "8000:5000"
-  redis:
-    image: "redis:alpine"
+      - "5432:5432"
+  api:
+    build:
+      context: "."
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_SOURCE=postgresql://root:secret@postgres:5432/invoice-db?sslmode=disable
+    ports: 
+      - "8080:8080"
+

@@ -34,7 +34,7 @@ For now, on the endpoints "/invoice" and "/transaction", I made the choice to re
 
 ## Technical Improvements
 
-  - Have to mock the db to test HTTP API (aim 100% coverage)
+  - Have to mock the db to test HTTP API (aim 100% coverage)()
 
   - Improve the unit test with many transactions to test concurrency
 
@@ -58,3 +58,5 @@ For now, on the endpoints "/invoice" and "/transaction", I made the choice to re
   - [sqlc](https://github.com/kyleconroy/sqlc) : not an ORM, but a library to implement a type-safe CRUD in Go. It generate Go code interfaces to queries. Faster than the ORM as GORM and got more options than the native sql library.
 
   - [gin](https://github.com/gin-gonic/gin) : one of the best framework for my needs in this project and i am familiar with. It is using 'httprouter' as router.
+
+  - [viper](https://github.com/spf13/viper) : to handle the env config easily.
