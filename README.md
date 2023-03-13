@@ -6,21 +6,17 @@ Small API example to handle invoices for a freelancer.
 
 Run the following command into your terminal:
 
-` git clone https://github.com/charlizzz/invoice-manager.git `
-
-` cd invoice-manager `
-
-` make postgres `
-
-` make createdb `
-
-`make migrateup`
-
-`./bin/main`
+```shell
+  git clone https://github.com/charlizzz/invoice-manager.git
+  
+  cd ./invoice-manager
+  
+  docker compose up
+```
 
 And use [Postman](https://www.postman.com/downloads/) (or equivalent) to test the endpoints.
+[Here's my collection for some tests to import in Postman](https://github.com/charlizzz/invoice-manager/blob/main/invoice-manager.postman_collection.json)
 
-*Note: still working on a better solution, to install and use the app with docker compose in a 'production environment'* 
 
 ## Endpoints
 
@@ -80,3 +76,5 @@ For now, on the endpoints "/invoice" and "/transaction", I made the choice to re
   - [gin](https://github.com/gin-gonic/gin) : one of the best framework for my needs in this project and i am familiar with. It is using 'httprouter' as router.
 
   - [viper](https://github.com/spf13/viper) : to handle the env config easily.
+ 
+  - [wait-for](https://github.com/eficode/wait-for) : script used in docker compose to wait for the db to be listening, and then run the migrations and start the server properly
