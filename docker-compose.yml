@@ -1,8 +1,20 @@
 version: "3.9"
 services:
   postgres:
-    build: .
-    ports:
-      - "8000:5000"
-  redis:
-    image: "redis:alpine"
+    build:
+      context: "./db/"
+      dockerfile: Dockerfile
+      
+  api:
+    build:
+      context: "."
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_SOURCE=postgresql://root:secret@postgres:5432/invoice-db?sslmode=disable
+    ports: 
+      - "8080:8080"
+    depends_on:
+      - postgres
+    entrypoint: ["./wait-for.sh", "postgres:5432", "--", "/app/start.sh"]
+    command: ["/app/main"]
+
