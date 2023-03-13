@@ -18,6 +18,10 @@ Run the following command into your terminal:
 
 `./bin/main`
 
+And use [Postman](https://www.postman.com/downloads/) (or equivalent) to test the endpoints.
+
+*Note: still working on a better solution, to install and use the app with docker compose in a 'production environment'* 
+
 ## Endpoints
 
   - "/users" of type GET is returning a list of the first 100 users from the db
