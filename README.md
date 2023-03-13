@@ -2,6 +2,22 @@
 
 Small API example to handle invoices for a freelancer.
 
+## How to use it
+
+Run the following command into your terminal:
+
+` git clone https://github.com/charlizzz/invoice-manager.git `
+
+` cd invoice-manager `
+
+` make postgres `
+
+` make createdb `
+
+`make migrateup`
+
+`./bin/main`
+
 ## Endpoints
 
   - "/users" of type GET is returning a list of the first 100 users from the db
